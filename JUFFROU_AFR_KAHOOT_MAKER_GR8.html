@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUFFROU - AFR KAHOOT MAKER Gr 8</title>
+<style>
+*{box-sizing:border-box}:root{--bg:#000;--card:#111;--border:#222;--text:#fff}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+header{border-bottom:1px solid var(--border);padding:28px 18px;text-align:center}
+header h1{margin:0;font-size:clamp(22px,5vw,38px);font-weight:900;letter-spacing:1px}
+header p{margin:9px 0 0;color:#aaa;font-size:13px;letter-spacing:1px}
+.container{width:min(1100px,94%);margin:25px auto 50px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:20px}
+.card h2{margin:0 0 18px;font-size:20px}.card h2 span{color:#888;font-size:13px;margin-left:7px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.field{display:flex;flex-direction:column;gap:7px}label{font-size:13px;color:#bbb;font-weight:bold}
+input,select,textarea{width:100%;background:#080808;color:#fff;border:1px solid #292929;border-radius:11px;padding:13px;font-size:15px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#666;box-shadow:0 0 0 2px #181818}
+textarea{min-height:110px;resize:vertical}
+.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px}
+.answer{display:flex;align-items:center;gap:9px}.answer input[type=radio]{width:19px;height:19px;accent-color:white;flex:0 0 auto}
+.answer input[type=text]{flex:1}.btn-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}
+button{border:1px solid #333;background:#fff;color:#000;padding:12px 17px;border-radius:999px;font-weight:900;cursor:pointer;transition:.2s}
+button:hover{transform:translateY(-1px);background:#ddd}button.dark,button.danger{background:#111;color:#fff;border-color:#333}
+.badge{display:inline-flex;align-items:center;padding:6px 10px;border:1px solid #292929;border-radius:999px;color:#bbb;font-size:12px;background:#080808}
+.question-list{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.question-item{background:#080808;border:1px solid #242424;border-radius:13px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.question-info{min-width:0}.question-number{color:#777;font-size:12px;margin-bottom:5px}
+.question-text{font-weight:bold;word-break:break-word}.question-meta{margin-top:7px;display:flex;flex-wrap:wrap;gap:6px}
+.delete-btn{width:38px;height:38px;padding:0;border-radius:50%;background:#111;color:white;border:1px solid #333;flex-shrink:0}
+.code-box{width:100%;min-height:220px;background:#050505;color:#fff;border:1px solid #292929;border-radius:13px;padding:15px;font-family:monospace;font-size:12px;line-height:1.5;resize:vertical;word-break:break-all}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.empty{color:#777;padding:15px 0;text-align:center}
+.leaderboard{display:flex;flex-direction:column;gap:8px}.leader{background:#080808;border:1px solid #242424;border-radius:12px;padding:13px;display:flex;justify-content:space-between;align-items:center}
+.rank{font-weight:900;width:40px}.player{flex:1;font-weight:bold}.score{font-weight:900}.demo{border-color:#555}.notice{color:#888;font-size:12px;margin-top:10px}
+@media(max-width:700px){.grid,.answers{grid-template-columns:1fr}.card{padding:17px}header{padding:23px 13px}.question-item{align-items:flex-start}.btn-row button{width:100%}}
+</style>
+</head>
+<body>
+<header><h1>JUFFROU - TOETS MAKER</h1><p>GR 8 AFR • PURE HTML • KAHOOT STYLE</p></header>
+<main class="container">
+<section class="card">
+<h2>📋 Toets Info</h2>
+<div class="grid">
+<div class="field"><label for="testName">Toets Naam</label><input id="testName" type="text" placeholder="bv. Gr 8 Tye Toets"></div>
+<div class="field"><label for="theme">Tema</label><select id="theme">
+<option>Tye</option><option>Lydende &amp; Bedrywende Vorm</option><option>Ontkenning nie...nie</option><option>Direkte &amp; Indirekte Rede</option><option>Trappe van Vergelyking</option><option>Begripstoets</option><option>Alles gemeng</option></select></div>
+<div class="field"><label for="time">Tyd per vraag</label><select id="time"><option value="10">10 sekondes</option><option value="20" selected>20 sekondes</option><option value="30">30 sekondes</option></select></div>
+<div class="field"><label for="points">Punte</label><select id="points"><option value="100">100</option><option value="200" selected>200</option><option value="500">500</option></select></div>
+</div>
+<div class="btn-row"><button class="demo" onclick="loadDemo()">⚡ Laai 5-Vraag Demo</button></div>
+</section>
+
+<section class="card">
+<h2>➕ Nuwe Vraag <span>Gr 8 Afrikaans</span></h2>
+<div class="field"><label for="question">Vraag</label><textarea id="question" placeholder="Tik die vraag hier..."></textarea></div>
+<div class="answers">
+<div class="answer"><input type="radio" name="correct" value="0" checked><input id="ans0" type="text" placeholder="Antwoord A"></div>
+<div class="answer"><input type="radio" name="correct" value="1"><input id="ans1" type="text" placeholder="Antwoord B"></div>
+<div class="answer"><input type="radio" name="correct" value="2"><input id="ans2" type="text" placeholder="Antwoord C"></div>
+<div class="answer"><input type="radio" name="correct" value="3"><input id="ans3" type="text" placeholder="Antwoord D"></div>
+</div>
+<div class="field" style="margin-top:15px"><label for="explanation">Verduideliking indien leerder verkeerd is</label><input id="explanation" type="text" placeholder="bv. Die korrekte antwoord is..."></div>
+<div class="btn-row"><button onclick="addQ()">＋ VOEG VRAAG BY</button></div>
+<div id="questionList" class="question-list"></div>
+</section>
+
+<section class="card">
+<h2>🚀 Publiseer</h2>
+<div class="stats"><span class="badge" id="questionStats">0 vrae</span><span class="badge" id="characterStats">0 karakters</span><span class="badge">BASE64</span></div>
+<textarea id="codeBox" class="code-box" readonly placeholder="Jou toets-kode sal hier verskyn..."></textarea>
+<div class="btn-row"><button onclick="copyCode()">📋 COPY KODE</button><button class="dark" onclick="downloadCode()">⬇ DOWNLOAD.txt</button></div>
+<div class="notice">Die kode bevat jou toetsnaam, tema en al die vrae.</div>
+</section>
+
+<section class="card">
+<h2>🏆 Leaderboard <span>Top leerders</span></h2>
+<div id="leaderboard" class="leaderboard"></div>
+</section>
+</main>
+
+<script>
+let qs=[];
+const STORAGE_KEY="afr_kahoot_maker",LEADER_KEY="afr_leader_global";
+
+function saveAll(){
+ const data={name:document.getElementById("testName").value,theme:document.getElementById("theme").value,time:document.getElementById("time").value,points:document.getElementById("points").value,qs};
+ localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+}
+function loadAll(){
+ try{
+  const s=localStorage.getItem(STORAGE_KEY);
+  if(!s){qs=[];render();return}
+  const d=JSON.parse(s);
+  document.getElementById("testName").value=d.name||"";
+  document.getElementById("theme").value=d.theme||"Tye";
+  document.getElementById("time").value=d.time||"20";
+  document.getElementById("points").value=d.points||"200";
+  qs=Array.isArray(d.qs)?d.qs:[];
+  render();
+ }catch(e){qs=[];render()}
+}
+function addQ(){
+ const q=document.getElementById("question").value.trim();
+ const answers=[0,1,2,3].map(i=>document.getElementById("ans"+i).value.trim());
+ const correct=document.querySelector('input[name="correct"]:checked');
+ const explanation=document.getElementById("explanation").value.trim();
+ const time=Number(document.getElementById("time").value);
+ const points=Number(document.getElementById("points").value);
+ if(!q){alert("Tik asseblief 'n vraag in.");return}
+ if(answers.some(a=>!a)){alert("Vul asseblief al 4 antwoorde in.");return}
+ qs.push({q,a:answers,c:correct?Number(correct.value):0,e:explanation,t:time,p:points});
+ clearQuestionForm();saveAll();render();
+}
+function clearQuestionForm(){
+ ["question","ans0","ans1","ans2","ans3","explanation"].forEach(id=>document.getElementById(id).value="");
+ document.querySelector('input[name="correct"][value="0"]').checked=true;
+}
+function deleteQuestion(i){
+ if(confirm("Verwyder hierdie vraag?")){qs.splice(i,1);saveAll();render()}
+}
+function escapeHTML(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function render(){
+ const list=document.getElementById("questionList");
+ if(!qs.length){list.innerHTML='<div class="empty">Geen vrae nog nie. Voeg jou eerste vraag by.</div>'}
+ else list.innerHTML=qs.map((x,i)=>`<div class="question-item"><div class="question-info"><div class="question-number">VRAAG ${i+1}</div><div class="question-text">${escapeHTML(x.q)}</div><div class="question-meta"><span class="badge">Korrekte antwoord: ${["A","B","C","D"][x.c]}</span><span class="badge">${x.t}s</span><span class="badge">${x.p} punte</span></div></div><button class="delete-btn" onclick="deleteQuestion(${i})">×</button></div>`).join("");
+ updateCode();
+}
+function updateCode(){
+ const payload={n:document.getElementById("testName").value.trim(),tema:document.getElementById("theme").value,qs};
+ let encoded;
+ try{encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload))))}catch(e){encoded=btoa(JSON.stringify(payload))}
+ document.getElementById("codeBox").value=encoded;
+ document.getElementById("questionStats").textContent=qs.length+(qs.length===1?" vraag":" vrae");
+ document.getElementById("characterStats").textContent=encoded.length+" karakters";
+}
+async function copyCode(){
+ const code=document.getElementById("codeBox").value;
+ if(!code){alert("Daar is nog geen kode nie.");return}
+ try{await navigator.clipboard.writeText(code)}catch(e){const b=document.getElementById("codeBox");b.focus();b.select();document.execCommand("copy")}
+ alert("Kode gekopieer! ✓");
+}
+function downloadCode(){
+ const code=document.getElementById("codeBox").value;
+ if(!code){alert("Daar is nog geen kode om af te laai nie.");return}
+ const blob=new Blob([code],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+ const name=document.getElementById("testName").value.trim().replace(/[^\w\-]+/g,"_").replace(/^_+|_+$/g,"");
+ a.href=url;a.download=(name||"afr_kahoot_toets")+".txt";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+function loadDemo(){
+ if(qs.length&&!confirm("Die huidige vrae sal deur die 5 demo-vrae vervang word. Gaan voort?"))return;
+ document.getElementById("testName").value="Gr 8 Afrikaans Demo Toets";
+ document.getElementById("theme").value="Alles gemeng";
+ document.getElementById("time").value="20";
+ document.getElementById("points").value="200";
+ qs=[
+ {q:"Wat is die verlede tyd van 'eet'?",a:["Het geëet","Sal eet","Eet","Eet het"],c:0,e:"Die verlede tyd gebruik 'het' saam met die voltooide deelwoord: 'het geëet'.",t:20,p:200},
+ {q:"Wat is die toekomende tyd van 'Die seun lees 'n boek'?",a:["Die seun het 'n boek gelees.","Die seun sal 'n boek lees.","Die seun lees 'n boek.","Die seun het 'n boek."],c:1,e:"Die toekomende tyd gebruik gewoonlik 'sal' + die werkwoord.",t:20,p:200},
+ {q:"Kies die korrekte ontkenning: 'Sy speel netbal.'",a:["Sy speel nie netbal nie.","Sy nie speel netbal nie.","Sy speel netbal nie.","Nie sy speel netbal."],c:0,e:"In Afrikaans gebruik ons die dubbele ontkenning: 'nie ... nie'.",t:20,p:200},
+ {q:"Verander na die lydende vorm: 'Die seun skop die bal.'",a:["Die bal word deur die seun geskop.","Die bal skop die seun.","Die seun word deur die bal geskop.","Die bal het die seun geskop."],c:0,e:"Die voorwerp van die aktiewe sin word die onderwerp van die lydende vorm.",t:20,p:200},
+ {q:"Wat is die oortreffende trap van 'groot'?",a:["Groter","Grootste","Meer groot","Grootsteer"],c:1,e:"Die trappe van vergelyking is groot, groter, grootste.",t:20,p:200}
+ ];
+ saveAll();render();
+}
+function renderLeaderboard(){
+ const board=document.getElementById("leaderboard");let data=[];
+ try{data=JSON.parse(localStorage.getItem(LEADER_KEY))||[]}catch(e){}
+ if(!Array.isArray(data))data=[];
+ data.sort((a,b)=>Number(b.score||0)-Number(a.score||0));data=data.slice(0,10);
+ if(!data.length){board.innerHTML='<div class="empty">Geen leerders op die leaderboard nie.</div>';return}
+ board.innerHTML=data.map((x,i)=>`<div class="leader"><div class="rank">#${i+1}</div><div class="player">${escapeHTML(x.name||"Leerder")}</div><div class="score">${Number(x.score||0)} pts</div></div>`).join("");
+}
+["testName","theme","time","points"].forEach(id=>{
+ document.getElementById(id).addEventListener("input",()=>{saveAll();updateCode()});
+ document.getElementById(id).addEventListener("change",()=>{saveAll();updateCode()});
+});
+loadAll();renderLeaderboard();updateCode();
+</script>
+</body>
+</html>
